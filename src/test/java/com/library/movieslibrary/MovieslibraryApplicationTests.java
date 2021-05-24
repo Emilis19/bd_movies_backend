@@ -1,5 +1,6 @@
 package com.library.movieslibrary;
 
+import com.library.movieslibrary.controller.CommentsController;
 import com.library.movieslibrary.controller.MovieController;
 import com.library.movieslibrary.model.Movie;
 import com.library.movieslibrary.model.MovieComment;
@@ -34,6 +35,8 @@ class MovieslibraryApplicationTests {
 	private MovieApiService movieApiService;
 	@InjectMocks
 	private MovieController movieController;
+	@InjectMocks
+	private CommentsController commentsController;
 	@MockBean
 	private MovieService movieService;
 	@MockBean
@@ -102,7 +105,7 @@ class MovieslibraryApplicationTests {
 	public void testSavingComment() {
 		when(commentService.save(any(MovieComment.class))).thenReturn(comment);
 
-		ResponseEntity<?> res = movieController.saveMovieComment(new MovieComment());
+		ResponseEntity<?> res = commentsController.saveMovieComment(new MovieComment());
 		assertEquals(res.getStatusCode(), HttpStatus.NO_CONTENT);
 
 	}
@@ -111,7 +114,7 @@ class MovieslibraryApplicationTests {
 	public void testGetComment() {
 		when(commentService.findAllByImdbId(anyString())).thenReturn(List.of(comment));
 
-		ResponseEntity<List<MovieComment>> res = movieController.getCommentsByImdbId(anyString());
+		ResponseEntity<List<MovieComment>> res = commentsController.getCommentsByImdbId(anyString());
 		assertEquals(res.getStatusCode(), HttpStatus.OK);
 		assertNotNull(res.getBody());
 		assertEquals(res.getBody().get(0).getImdbId(), "2");
